@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+  </head>
+  <body>
+    <style>
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .flex-item {
+        width: 33.3%;
+        background-color: aqua;
+        margin: 20px 0 50px 0;
+      }
+    </style>
+    <div>
+      <span id="fullName"></span>
+    </div>
+    <div id="container">Loading products...</div>
+    <a href="/login">Go to login</a>
+  </body>
+  <script>
+    fullNameContainer = document.getElementById("fullName");
+    let container = document.getElementById("container");
+    window.onload = function () {
+      let user = JSON.parse(localStorage.getItem("user"));
+      fullNameContainer.innerHTML = `Welcome to our shop ${user.firstName} ${user.lastName}`;
+      fetch("/api/product")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          let cards = data.products.map((product) => {
+            return `<div class = 'flex-item'>
+                <div>name: ${product.name}</div>
+                <div>price: ${product.price}</div>
+                <div>quantity: ${product.quantity}</div>
+                <a href="/product/${product.id}"> View More</a>
+                
+                </div>`;
+          });
+          container.innerHTML = cards.join("");
+        });
+    };
+  </script>
+</html>

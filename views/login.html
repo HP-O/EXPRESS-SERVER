@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .input-field {
+        padding: 5px;
+        margin-bottom: 3px;
+        width: 400px;
+      }
+      form {
+        width: 400px;
+      }
+
+      .input-label {
+        display: block;
+      }
+
+      button {
+        border: none;
+        padding: 8px;
+        border-radius: 2px;
+        width: 100%;
+        background-color: gold;
+      }
+    </style>
+    <form method="POST" action="/api/login" onsubmit="handleSubmit(event)">
+      <div>
+        <label class="input-label" for="email"> <strong>Email</strong> </label>
+        <input
+          class="input-field"
+          name="email"
+          type="email"
+          id="email"
+          placeholder="johndoe@gmail.com"
+        />
+      </div>
+      <div>
+        <label class="input-label" for="email">
+          <strong>Password</strong>
+        </label>
+        <input
+          class="input-field"
+          name="password"
+          type="password"
+          id="email"
+          placeholder="*********"
+        />
+      </div>
+      <button>Login</button>
+    </form>
+  </body>
+  <script>
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const email = event.target[0].value;
+      const password = event.target[1].value;
+
+      fetch("/api/login", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          window.location.href = "/product";
+        });
+    };
+  </script>
+</html>

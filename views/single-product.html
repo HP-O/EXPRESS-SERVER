@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Single Product</title>
+  </head>
+  <body>
+    <h1>Product Details Page</h1>
+    <div id="product-container"></div>
+  </body>
+  <script>
+    const productId = location.pathname.split("/")[2];
+    // let productId = splitArray[2];
+    const productContainer = document.getElementById("product-container");
+    fetch("/api/product/" + productId)
+      .then((response) => response.json())
+      .then((data) => {
+        let product = data.product;
+        productContainer.innerHTML = `
+        <div>Product Id: ${product.id}</div>
+        <img
+            src="${product.imageUrl}"
+            height="400"
+            width="600"
+            alt="product image"
+         />
+        <div>Name: ${product.name} </div>
+        <div>Price: ${product.price}</div>
+        <div>Quantity: ${product.quantity}</div>
+        <a href="/product"> Go to products</a>
+        `;
+      });
+  </script>
+</html>
